@@ -148,3 +148,19 @@ header {
 .heading:hover {
     opacity: 1;
 }
+
+.underline-dark {
+    width: 150px;
+    border: 3px solid #888;
+    margin: auto;
+}
+
+.gallery-list-item {
+    color: #777;
+    cursor: pointer;
+    user-select: none;
+}
+
+.active-item {
+    color: #70aed2;
+}
