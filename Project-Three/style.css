@@ -5,7 +5,7 @@ body {
 header {
     height: 100vh;
     background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)),
-        url(images/header-img.jpeg) no-repeat center center / cover;
+        url(images/header-img.jpeg) no-repeat center / cover;
 }
 
 .nav-menu {
@@ -163,4 +163,8 @@ header {
 
 .active-item {
     color: #70aed2;
+}
+
+.customers {
+    background: #151f20;
 }
