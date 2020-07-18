@@ -5,6 +5,9 @@ const rules = document.getElementById("rules");
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
+const brickRowCount = 9;
+const brickColCount = 5;
+
 let score = 0;
 
 const ball = {
@@ -24,6 +27,26 @@ const paddle = {
     speed: 8,
     dx: 0,
 };
+
+const brickProps = {
+    w: 70,
+    h: 20,
+    padding: 10,
+    offsetX: 45,
+    offsetY: 60,
+    visible: true,
+};
+
+const bricks = [];
+
+for (let i = 0; i < brickRowCount; i++) {
+    bricks[i] = [];
+    for (let j = 0; j < brickColCount; j++) {
+        const x = i * (brickProps.w + brickProps.padding) + brickProps.offsetX;
+        const y = j * (brickProps.h + brickProps.padding) + brickProps.offsetY;
+        bricks[i][j] = { x, y, ...brickProps };
+    }
+}
 
 const drawBall = () => {
     ctx.beginPath();
@@ -46,13 +69,57 @@ const drawScore = () => {
     ctx.fillText(`Score: ${score}`, canvas.width - 100, 30);
 };
 
+const drawBricks = () => {
+    bricks.forEach((column) => {
+        column.forEach((brick) => {
+            ctx.beginPath();
+            ctx.rect(brick.x, brick.y, brick.w, brick.h);
+            ctx.fillStyle = brick.visible ? "#0095dd" : "transparent";
+            ctx.fill();
+            ctx.closePath();
+        });
+    });
+};
+
+const movePaddle = () => {
+    paddle.x += paddle.dx;
+
+    if (paddle.x + paddle.w > canvas.width) {
+        paddle.x = canvas.width - paddle.w;
+    }
+
+    if (paddle.x < 0) {
+        paddle.x = 0;
+    }
+};
+
 const draw = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBall();
     drawPaddle();
     drawScore();
+    drawBricks();
 };
 
-draw();
+const update = () => {
+    movePaddle();
+    draw();
+    requestAnimationFrame(update);
+};
+
+update();
+
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Right" || e.key === "ArrowRight") {
+        paddle.dx = paddle.speed;
+    } else if (e.key === "Left" || e.key === "ArrowLeft") {
+        paddle.dx = -paddle.speed;
+    }
+});
+
+document.addEventListener("keyup", (e) => {
+    paddle.dx = 0;
+});
 
 rulesBtn.addEventListener("click", () => {
     rules.classList.add("show");
