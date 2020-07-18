@@ -124,8 +124,25 @@ const moveBall = () => {
                 ) {
                     ball.dy *= -1;
                     brick.visible = false;
+                    score++;
+                    if (score % (brickRowCount * brickRowCount) === 0) {
+                        showAllBricks();
+                    }
                 }
             }
+        });
+    });
+
+    if (ball.y + ball.size > canvas.height) {
+        showAllBricks();
+        score = 0;
+    }
+};
+
+const showAllBricks = () => {
+    bricks.forEach((column) => {
+        column.forEach((brick) => {
+            brick.visible = true;
         });
     });
 };
